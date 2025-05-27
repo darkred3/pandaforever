@@ -1,0 +1,37 @@
+for gnu/linux and other somewhat posix-compliant systems.
+also works on windows somewhat.
+
+how to compile on POSIX:
+	first, install libcurl using your package manager.
+		it must include the development files.
+		on debian, the package name may be libcurl4-gnutls-dev.
+		on arch it's just libcurl
+	next, use these commands:
+		git clone https://gitlab.com/squishydreams/pandaforever
+		cd pandaforever
+		make
+		(optional) sudo make install
+how to compile on windows:
+	i don't know.
+	i compile it *for* windows on arch linux using mingw.
+		specifically, i use the mingw-w64-gcc and mingw-w64-curl packages.
+		and the makefile.windows file will set CC for you.
+
+most basic usage:
+	./pandaforever --username "<username>" --password "<password>" https://exhentai.org/g/800215/61f0effbea/
+
+for more information, there is a short man page.
+read it with "man ./pandaforever.1"
+
+------
+zip using an external program if you so desire.
+sort directories using an external program.
+please back up your files or at least have some way to detect corruption.
+
+------
+By default, this program only works with exhentai.
+	All links must be to exhentai.org.
+	To make it work with e-hentai links only, add "-DDISABLESECRETCLUB" to the end of "CFLAGS" in "makefile" and recompile.
+	It will show a warning if it worked.
+	Login is not necessary for e-hentai, but original images can't be downloaded.
+	Do not use this mode. it is only provided for those who want to test the program before giving it their credentials.

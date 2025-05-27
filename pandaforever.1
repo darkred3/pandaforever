@@ -1,0 +1,258 @@
+.\"This man page is public domain.
+.TH PANDAFOREVER 1 2020 "version ?" "pandaforever manual"
+.SH NAME
+pandaforever \- exhentai downloader
+.SH SYNOPSIS
+pandaforever [OPTIONS...] [URLS...]
+.SH DESCRIPTION
+Download exhentai galleries in original resolution for archival purposes.
+.SH OPTIONS
+
+.P
+.BR --username
+.RB <username>
+.RS 4
+Logging in with credentials is mandatory if not using cached cookies.
+.RE
+
+.P
+.BR --password
+.RB <password>
+.RS 4
+Use with --username
+.RE
+
+.P
+.BR --rootout
+.RB <path>
+.RS 4
+The directory that gallery folders are put in. Its parent directories must already exist. Defaults to the current directory.
+.RE
+
+.P
+.BR -i
+.RB <filename>
+.RS 4
+A file that is a list of urls. You can use this option multiple times. This
+.B must
+come after all other options, but can be mixed with urls.
+.RE
+
+.P
+.BR --outputlist
+.RB <filename>
+.RS 4
+If a url list fails with an error that isn't unusual, the continue link and the remaining lines of the url list will be written to this file.
+Use this list to continue your download. If you specify multiple url lists, the first url list to fail will be the one written to this file.
+If no list fails, this file will not be created.
+.RE
+
+.P
+.BR --apimetadata
+.RB <y/n>
+.RS 4
+Disabled by default. Get the gallery metadata directly, using the API, and save it to inforaw.json. If using --ezestylemetadata also, an additional request is not needed.
+.RE
+
+.P
+.BR --ezestylemetadata
+.RB <y/n>
+.RS 4
+Enabled by default. Parse the gallery metadata from the API and gallery page's HTML and save it to info.json in the style of eze.
+.RE
+
+.P
+.BR --savecomments
+.RB <y/n>
+.RS 4
+Disabled by default. Save the gallery comments into peanutgallery.txt. Does not require an extra request. For this to work, you need to go to exhentai.org settings and set the following under the "Gallery Comments" section: "Oldest comments first" and "On score hover or click".
+.RE
+
+.P
+.BR --dirformatid
+.RB <id>
+.RS 4
+Set the gallery folder format ID. Default is 0. Format ID list:
+.br
+0: "galleryname [galleryid]"
+.br
+1: "[galleryid] galleryname"
+.br
+2: "galleryid"
+.RE
+
+.P
+.BR --waitmin
+.RB <seconds>
+.RS 4
+(You must also set --waitmax)
+The program waits a random amount of time between page downloads and other requests.
+This is the lower limit.
+The unit is seconds and you can use decimals.
+.RE
+
+.P
+.BR --waitmax
+.RB <seconds>
+.RS 4
+Use with --waitmin
+.RE
+
+.P
+.BR --maxgallerydirlen
+.RB <len>
+.RS 4
+Maximum length of the gallery folder name.
+This option is useful if, for example, you plan to zip the folder. In that case, you need to reserve 4 more chars before NAME_MAX for the extension.
+.br
+On POSIX, this is NAME_MAX by default and the unit is bytes.
+.br
+On Windows, out of fear of the 260 limit, it is 110 by default and the unit is utf-16 chars.
+.RE
+
+.P
+.BR --maximagefilenamelen
+.RB <len>
+.RS 4
+This length will include the ".p" extension.
+NAME_MAX by default on POSIX, _MAX_FNAME by default on Windows.
+.RE
+
+.P
+.BR --retrywaitseconds
+.RB <seconds>
+.RS 4
+Time to wait when it's the same h@h server.
+.RE
+
+.P
+.BR --maxsameserverretries
+.RB <attempts>
+.RS 4
+Maximum number of times to retry the same h@h server.
+.RE
+
+.P
+.BR --maxpageisnotloadingtrys
+.RB <attempts>
+.RS 4
+Maximum number of times to switch to a different h@h server.
+.RE
+
+.P
+.BR --max503requests
+.RB <attempts>
+.RS 4
+Maximum times to retry if panda is giving 503.
+.RE
+
+.P
+.BR --canresetlimit
+.RB <y/n>
+.RS 4
+If n, image viewing limit will not be reset using GP.
+.RE
+
+.P
+.BR --disableunicodereplace
+.RB <y/n>
+.RS 4
+If y, illegal filename characters will be replaced with a space instead of their fullwidth variant.
+.br
+(On POSIX, only / will ever be replaced. On Windows or under WSL, more characters will be replaced.)
+.RE
+
+.P
+.BR --wsloverride
+.RB <y/n>
+.RS 4
+Force WSL limitations on or off. Overrides automatic detection.
+.RE
+
+.P
+.BR --cookiefile
+.RB <path>
+.RS 4
+The file cookies will be loaded from and saved to. If the file exists, log in will not be attempted even if --username is used. If the file exists and doesn't have the cookies required, things will break. Defaults to ./cookies.
+.RE
+
+.P
+.BR --maxfiledownloads
+.RB <count>
+.RS 4
+Disabled by default. How many files to download before stopping.
+.RE
+
+.P
+.BR --unavailablelist
+.RB <path>
+.RS 4
+The file path to append links to removed galleries to.
+If you use this option, the program will continue. Otherwise, an unavailable gallery will be considered a fatal error.
+.RE
+
+.P
+.BR --useragent
+.RB <string>
+.RE
+
+.P
+.BR --evenmorestrict
+.RB <y/n>
+.RS 4
+Make the program even more strict than it already is. This setting is bad for automated scripts. As of right now this will cause the program to stop if one of these happens:
+.RS 4
+* Comments are impossible to parse
+.RE
+.RE
+
+.P
+.BR --log
+.RB <level>
+.RS 4
+How much garbage to write to stdout. The higher, the more garbage. 3 is the highest that matters and -1 is the lowest that matters.
+.RE
+
+.SH CONFIG FILE
+Any of the command line arguments can be shoved into a config file.
+Put the argument name, excluding the double hyphen, put an equals, and then the value.
+Each option goes on its own line.
+Comment lines can start with '#'.
+The encoding should be UTF-8.
+.br
+On POSIX, the config file goes at ~/.config/pandaforevercfg.txt . XDG_CONFIG_HOME is supported too.
+.br
+On Windows, the config file goes next to the exe and is named "pandaforevercfg.txt".
+.br
+Config example:
+.RS 4
+.br
+canresetlimit=n
+.br
+log=3
+.br
+# obviously not a valid path on windows
+.br
+rootout=/home/user/doujins/my downloads/
+.RE
+
+.SH URLS
+The urls given can be either a gallery page of a specific page of a gallery
+.RS 4
+The gallery metadata will only be downloaded if your link leads to the gallery itself.
+.RE
+.P
+By default, this program only works with exhentai. All links must be to exhentai.org.
+
+.SH NOTES
+
+.P
+Kill using SIGINT or SIGTERM to get a link usable for resume printed to stdout.
+.P
+While downloading, files have ".p" added to their end. when the download is complete, the file will be renamed to remove it.
+.RS 4
+Any file with .p is incomplete, and any file without it is complete.
+.RE
+
+.SH BUGS
+This program works perfectly.

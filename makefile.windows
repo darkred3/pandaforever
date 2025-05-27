@@ -1,0 +1,46 @@
+SRC = $(wildcard ./src/*.c)
+OBJ = $(SRC:.c=.o)
+
+CC = i686-w64-mingw32-gcc
+
+LDFLAGS = -lcurl -liconv
+CFLAGS = -Wall -std=c99 -pedantic -D_POSIX_C_SOURCE=200809L
+OUTNAME = pandaforever.exe
+MANUALNAME = manual_windows.txt
+
+$(OUTNAME): $(OBJ)
+	$(CC) $^ $(CFLAGS) $(LDFLAGS) -o $@
+
+$(MANUALNAME):
+	groff -t -e -mandoc -Tascii pandaforever.1 | col -bx | head -n -1 | cat -s > $(MANUALNAME)
+	groff -t -e -mandoc -Tascii windowsManualAppend | col -bx | tail -n +2 | head -n -1 | cat -s >> $(MANUALNAME)
+
+.PHONY: clean makezip
+clean:
+	rm -f $(OBJ) $(OUTNAME) $(MANUALNAME)
+
+makezip: $(MANUALNAME) $(OUTNAME)
+	rm -rf ./outbuild /tmp/windowsbuild.zip
+	cp -r windowsbuildtemplate outbuild
+	cp $(OUTNAME) ./outbuild/
+	cp $(MANUALNAME) ./outbuild/
+	cd outbuild;  \
+	zip -r /tmp/windowsbuild.zip ./*
+
+# DO NOT DELETE
+
+./src/bonusmodes.o: ./src/panda.h ./src/mischelp.h ./src/metadatawrite.h
+./src/bonusmodes.o: ./src/curlhelper.h ./src/configreader.h ./src/main.h
+./src/comments.o: ./src/mischelp.h ./src/fixhtmlgarbage.h
+./src/configreader.o: ./src/mischelp.h ./src/configreader.h ./src/lose.h
+./src/curlhelper.o: ./src/lose.h
+./src/hooks.o: ./src/lose.h ./src/mischelp.h ./src/panda.h
+./src/lose.o: ./src/lose.h
+./src/main.o: ./src/curlhelper.h ./src/panda.h ./src/mischelp.h
+./src/main.o: ./src/configreader.h ./src/lose.h ./src/metadatawrite.h
+./src/main.o: ./src/main.h ./src/bonusmodes.h ./src/hooks.h
+./src/metadatawrite.o: ./src/mischelp.h ./src/fixhtmlgarbage.h ./src/panda.h
+./src/mischelp.o: ./src/fixhtmlgarbage.h ./src/lose.h ./src/stolenfunctions.h
+./src/panda.o: ./src/curlhelper.h ./src/mischelp.h ./src/fixhtmlgarbage.h
+./src/panda.o: ./src/metadatawrite.h ./src/panda.h ./src/lose.h ./src/hooks.h
+./src/stolenfunctions.o: ./src/lose.h

@@ -1,0 +1,11 @@
+.TH WindowsNotes
+
+.SH WINDOWS NOTES
+
+It requires command line usage. Double clicking does nothing.
+
+.P
+Do not place the exe in a folder with special characters.
+
+.P
+Max path length on windows is 260 chars. Gallery folder names are capped at 110 chars by default. The full name is in the json, of course. It's a good idea to have the path to your download destination folder short to leave the maximum amount of the remaining 150 chars for image filenames.

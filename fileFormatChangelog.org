@@ -1,0 +1,43 @@
+File format version number is changed every time that the code gives a different output for the same input.
+
+All version numbers have a statement telling you which data was lost by files using the previous version.
+When it says that "no data loss occurred," it means that the old, previous info file contains all the information required to derive the new info file. You just need to make a program or do it manually.
+
+* Metadata (eze)
+** 1 (10/22/20)
+** 2 (10/25/20)
+*** a line break is now put at the end of the file.
+*** The gallery upload date now includes the second.
+*** Extended the eze format:
+**** "filecount" added
+**** "favorites" count added.
+**** "rating" added
+**** "filesize" added
+***** Can be used to verify the gallery has the correct number of bytes. But I've have never had pandaforever download wrong files.
+*** Data lost in the previous version:
+**** (If you happen to have the api metadata too, no data loss.)
+**** The second of the minute the gallery was uploaded is lost. It is written as 0.
+***** Note that one of the other downloaders that uses eze format does this also. Can't remember which one though.
+**** Does not include any of the extensions from version 2.
+** 3 (2/08/21)
+*** Fix the "uploader" field when it's a disowned gallery. Previously, the string " Add to Favorites" would be used.
+*** Previous version did not lose any data.
+** 4 (2/25/21)
+*** Previously, if a tag was linked in the gallery comments, some garbage would be included in the tag metadata.
+*** Previous version did not lose any data.
+**** To find downloads affected by the bug, search for info with the strings "%3" or "</a>"
+* Comments
+** 1 (11/24/20)
+*** Note that all html tags are written in the file.
+** 2 (12/02/20)
+*** html tags are now replaced with appropriate bbcode in comments.
+**** see 2.5 for bug notes.
+*** Previous version did not lose any data.
+** 2.5 (12/10/20)
+*** Previously, there would be a bit of html in the comments if there was an advertisement there. They are now skipped.
+*** Also, any unknown html tags will now cause the code to quit. This prevents any unintended html from ending up in the comment body ever again.
+*** On 2/08/21, the code was fixed to allow saving comments that don't have a name. But pandaforever would previously fail for these cases. Therefore, the output for the same input has not changed.
+*** Previous version did not lose any data.
+** 3
+If a comment contains a link, the label on the link is also saved.
+Versions 2 and 2.5 are missing the label, but version 1 may or may not be.
